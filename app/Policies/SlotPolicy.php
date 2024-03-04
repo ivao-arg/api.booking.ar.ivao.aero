@@ -51,13 +51,13 @@ class SlotPolicy
         }
 
         if ($action === "confirm") {
-            if ($slot->bookingStatus !== "prebooked") {
-                return Response::deny("The slot is not prebooked", 400);
-            }
+            // if ($slot->bookingStatus !== "prebooked") {
+            //     return Response::deny("The slot is not prebooked", 400);
+            // }
 
-            if (!$slotEvent->can_confirm_slots) {
-                return Response::deny("book.tooEarly");
-            }
+            // if (!$slotEvent->can_confirm_slots) {
+            //     return Response::deny("book.tooEarly");
+            // }
         }
 
         if ($action === "book") {
