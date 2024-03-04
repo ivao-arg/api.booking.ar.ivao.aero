@@ -140,8 +140,6 @@ class SlotController extends Controller
             /** @var \App\Models\Event */
             $slotEvent = $slot->event;
 
-            $slot->bookingStatus = $slotEvent->can_auto_book ? 'booked' : 'prebooked';
-
             //Cycle through the user slots and checks for overlapping slots.
             foreach($user->slotsBooked->where('eventId', $slot->event->id) as $bookedSlot) {
                 if(SlotController::checkOverlappingSlots($slot, $bookedSlot)) {
