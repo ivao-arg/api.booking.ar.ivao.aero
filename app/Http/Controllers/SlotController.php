@@ -137,6 +137,22 @@ class SlotController extends Controller
             $slot->bookingStatus = 'free';
             $slot->save();
         } else if ($action === "confirm") {
+            /** @var \App\Models\Event */
+            $slotEvent = $slot->event;
+
+            $slot->bookingStatus = $slotEvent->can_auto_book ? 'booked' : 'prebooked';
+
+            //Cycle through the user slots and checks for overlapping slots.
+            foreach($user->slotsBooked->where('eventId', $slot->event->id) as $bookedSlot) {
+                if(SlotController::checkOverlappingSlots($slot, $bookedSlot)) {
+                    return abort(403, 'book.alreadyBusy');
+                }
+            }
+
+            $slot->bookingTime = Carbon::now();
+
+            $user->slotsBooked()->save($slot);
+            
             $slot->bookingStatus = "booked";
             $slot->save();
         }
